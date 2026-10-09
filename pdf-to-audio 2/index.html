@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page to Voice: PDF and text to audio</title>
+<meta name="description" content="Turn a PDF or pasted text into speech in your browser. Listen instantly or generate a downloadable MP3.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+</head>
+<body>
+<header><h1>Page to Voice</h1><p>Turn a PDF or any text into speech. Everything runs in your browser, so your documents never leave your device.</p></header>
+<main>
+  <section class="card">
+    <h2>Your text</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="application/pdf,.pdf,.txt,text/plain" hidden>
+      <strong>Choose a PDF or text file</strong><span>or drop it here</span>
+    </label>
+    <div class="row" id="range" hidden>
+      <label>From page<input type="number" id="p1" min="1" value="1"></label>
+      <label>To page<input type="number" id="p2" min="1" value="1"></label>
+      <button type="button" id="reload">Re-read pages</button>
+    </div>
+    <label>Text to read (edit freely)<textarea id="text" rows="9" placeholder="Paste text here, or load a file above."></textarea></label>
+    <p class="meta" id="count">0 words</p>
+  </section>
+  <section class="card">
+    <h2>Voice</h2>
+    <div class="seg" role="radiogroup" aria-label="Voice engine">
+      <label><input type="radio" name="mode" value="browser" checked> Browser voice <small>instant</small></label>
+      <label><input type="radio" name="mode" value="piper"> Neural voice <small>downloadable MP3</small></label>
+    </div>
+    <div id="browserOpts">
+      <label>Voice<select id="bvoice"></select></label>
+      <div class="row"><label>Speed<input type="range" id="rate" min="0.6" max="1.8" step="0.1" value="1"></label><label>Pitch<input type="range" id="pitch" min="0.6" max="1.6" step="0.1" value="1"></label></div>
+    </div>
+    <div id="piperOpts" hidden>
+      <label>Voice<select id="pvoice"><option value="en_US-hfc_female-medium">US English, female</option><option value="en_US-ryan-medium">US English, male</option><option value="en_GB-alba-medium">British English, female</option></select></label>
+      <p class="meta">The first use downloads the voice model (tens of MB) and caches it. Generation is slower than browser voices.</p>
+    </div>
+    <div class="row actions">
+      <button type="button" id="go" class="primary">Listen</button>
+      <button type="button" id="pause" disabled>Pause</button>
+      <button type="button" id="stop" disabled>Stop</button>
+      <button type="button" id="dl" hidden disabled>Download MP3</button>
+    </div>
+    <progress id="bar" value="0" max="1" hidden></progress>
+    <p id="status" class="meta" role="status" aria-live="polite"></p>
+    <audio id="player" controls hidden></audio>
+  </section>
+</main>
+<script src="js/main.js"></script>
+</body>
+</html>
